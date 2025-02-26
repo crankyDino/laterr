@@ -5,18 +5,19 @@
     "description": "Now you can finally read it laterr",
     "permissions": [
         "storage",
-        "tabs"
+        "tabs",
+        "browserSettings"
     ],
     "host_permissions": [
-        "https://*"
+        "https://*/*"
     ],
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "scripts/workers/background.js"
     },
     "content_scripts": [
         {
             "matches": [
-                "https://*.youtube.com/*"
+                "https://*/*"
             ],
             "js": [
                 "scripts/content.js"
@@ -26,19 +27,18 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "assets/bookmark.png",
-                "assets/play.png",
-                "assets/delete.png",
-                "assets/save.png"
+                "assets/*"
             ],
             "matches": [
-                "https://*"
+                "https://*/*"
             ]
         }
     ],
     "action": {
-        "default_icon": {},
+        "default_icon": {
+            "48": "assets/icon-48.png"
+        },
         "default_title": "Laterr",
-        "default_popup": "templates/widget.html"
+        "default_popup": "popup/popup.html"
     }
 }

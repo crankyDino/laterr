@@ -1,0 +1,36 @@
+.title {
+    font-size: 1.8em;
+    color: steelblue;
+}
+
+.bookmark {
+    width: 14rem;
+    border: solid 1px steelblue;
+    height: 2rem;
+    border-radius: 4px;
+    padding: 0 4px;
+    background: lightcyan;
+    align-content: space-evenly;
+}
+
+.bookmark__title {
+    border-bottom: solid 1px lightgray;
+}
+
+.bookmark__name {
+    margin: auto;
+    font-size: 1rem;
+    font-weight: 600;
+    color: darkslategrey;
+}
+
+.footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 1.2em 0;
+}
+
+.footer__icon {
+    width: 12%;
+}
