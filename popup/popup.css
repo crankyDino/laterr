@@ -24,6 +24,11 @@
     color: darkslategrey;
 }
 
+.bookmark_btn{
+    padding: 0;
+    border: none;
+}
+
 .footer {
     display: flex;
     flex-direction: row;
@@ -32,5 +37,5 @@
 }
 
 .footer__icon {
-    width: 12%;
+    width: 50%;
 }
