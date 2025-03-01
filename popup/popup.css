@@ -1,3 +1,8 @@
+.container {
+    width: 20em;
+    max-width: 25em;
+}
+
 .title {
     font-size: 1.8em;
     color: steelblue;
@@ -11,6 +16,7 @@
     padding: 0 4px;
     background: lightcyan;
     align-content: space-evenly;
+    display: flex;
 }
 
 .bookmark__title {
@@ -22,11 +28,18 @@
     font-size: 1rem;
     font-weight: 600;
     color: darkslategrey;
+    width: 100%;
 }
 
-.bookmark_btn{
+.bookmark__btn {
     padding: 0;
     border: none;
+    align-content: center;
+}
+
+.save__bookmark {
+    height: 80%;
+    margin: auto;
 }
 
 .footer {
