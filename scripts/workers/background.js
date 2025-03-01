@@ -1,5 +1,7 @@
 chrome.tabs.onUpdated.addListener((tabId, tab) => {
-    console.log(tab.url);
+    console.log("On Tab Update");
+
+    chrome.storage.local.set({ currentTab: tab.url })
 
     // const queryParameters = tab.url.split("?")[1];
     // const urlParameters = new URLSearchParams(queryParameters);
@@ -18,11 +20,20 @@ chrome.runtime.onInstalled.addListener(() => {
     console.log("Laterr Extension Installed!");
 });
 
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//     console.log("Message received:", message);
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log("Message received:", message);
 
-//     if (message.type === "TEST") {
-//         sendResponse({ status: "Background script is active!" });
-//     }
-// });
+    if (message.type === "TEST") {
+        sendResponse({ status: "Background script is active!" });
+    }
+});
 
+chrome.windows.onFocusChanged.addListener((id, tab) => {
+    console.log("On window Update");
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs.length > 0) {
+            chrome.storage.local.set({ currentTab: tabs[0].url })
+            // console.log("Current Tab URL:", tabs[0].url);
+        }
+    });
+})
