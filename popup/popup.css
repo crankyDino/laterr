@@ -1,5 +1,5 @@
 .container {
-    width: 20em;
+    width: 22em;
     max-width: 25em;
 }
 
@@ -9,14 +9,35 @@
 }
 
 .bookmark {
-    width: 14rem;
+    display: flex;
+    /* width: 14rem; */
+    /* margin: auto; */
     border: solid 1px steelblue;
-    height: 2rem;
+    min-height: 1.8rem;
     border-radius: 4px;
     padding: 0 4px;
     background: lightcyan;
     align-content: space-evenly;
+    align-items: center;
+    justify-content: space-between;
+
+    & img {
+        height: 1.6em;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.bookmark__container {
     display: flex;
+    flex-direction: column;
+    row-gap: 0.4em;
+    max-height: 20em;
+    overflow: auto;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
 }
 
 .bookmark__title {
@@ -30,6 +51,58 @@
     color: darkslategrey;
     width: 100%;
 }
+
+#unsaved_bookmark {
+    & input[type="text"] {
+        border: none;
+        background: transparent;
+        
+        &:focus-visible{
+            outline: none;
+        }
+    }
+}
+
+div.error::before {
+    content: "";
+
+}
+
+div.error {
+    color: hsl(16, 100%, 50%);
+    /* position: relative;
+    justify-self: anchor-center;
+    margin: 0;
+    font-size: .8rem;
+
+    width: 100%;
+    left: -100%;
+    width: 100%;
+    position: absolute;
+    background: linear-gradient(90deg, hsl(16, 100%, 50%), hsl(16, 100%, 50%));
+    transition: width 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: loading 2s linear;
+
+    &p {
+        padding: 0;
+        margin: 0;
+    } */
+}
+
+/* 
+@keyframes loading {
+    0% {
+        left: -100%;
+    }
+
+    50% {
+        left: 100%;
+    }
+
+    100% {
+        right: -100%;
+    }
+} */
 
 .bookmark__btn {
     padding: 0;
@@ -51,4 +124,11 @@
 
 .footer__icon {
     width: 50%;
+}
+
+/* UTILITIES */
+button,a{
+    &:hover{
+        cursor: pointer;
+    }
 }
