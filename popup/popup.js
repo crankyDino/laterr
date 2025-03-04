@@ -19,14 +19,17 @@
                 const bookmarkTemplate = document.createElement("div")
                 bookmarkTemplate.classList.add("bookmark");
                 bookmarkTemplate.innerHTML = `
-                <a href="${bookmark.url}" target="_blank" class="bookmark__btn">
-                <p class="bookmark__name">${bookmark.title}</p>
-                </a>
-                <img
-                    id="add_bookmark"
-                    src="../assets/close-64.png"
-                    alt="bookmark icon"
-                  />
+                  <div class="bookmark__left">
+                    <a href="${bookmark.url}" target="_blank" class="bookmark__btn">
+                      <p class="bookmark__name">${bookmark.title}</p>
+                    </a>
+                    <p class="bookmark__url">${bookmark.url}</p>
+                  </div>
+
+                  <div class="bookmark__right">
+                    <p class="bookmark__date">${bookmark.dateCreated}</p>
+                    <img src="../assets/close-64.png" alt="bookmark icon" />
+                  </div>
                 `;
 
                 bookmarkTemplate.querySelector("img").addEventListener("click", () => deleteBookmark(bookmark.title))
@@ -99,25 +102,25 @@
     }
 
     addBookmark.addEventListener("click", (ev) => {
-        // chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        //     console.log("Ayo, i been clicked");
-        //     if (tabs.length === 0) return;
-        //     chrome.tabs.sendMessage(tabs[0].id, { action: "updateContent", data: "lightblue" });
-        // });
+        if (document.querySelector("#unsaved_bookmark")) {
+            document.querySelector("#unsaved_bookmark").remove();
+            return;
+        }
 
-        console.log("broooooo");
+        saveBookmarkTemplate.innerHTML = `<div class="bookmark__left">
+                    <input type="text">
+                    <p class="bookmark__url">new bookmark</p>
+                  </div>
 
-        if (document.querySelector("#unsaved_bookmark")) { return; }
-
-        saveBookmarkTemplate.innerHTML = `<input type="text">
-        <button class="bookmark__btn">
-            <img
-                id="save_bookmark"
-                class="save__bookmark"
-                src="../assets/save-32.png"
-                alt="save icon"
-            />
-        </button>`;
+                  <div class="bookmark__right">
+                    <p class="bookmark__date">${new Date().toISOString()}</p>
+                    <img
+                         id="save_bookmark"
+                         class="save__bookmark"
+                         src="../assets/save-32.png"
+                         alt="save icon"
+                     />
+                  </div>`;
 
 
         chrome.storage.local.get("currentTab", ({ currentTab }) => {
@@ -128,11 +131,9 @@
             bookmarkContainer[0].prepend(saveBookmarkTemplate)
             saveBookmarkTemplate.querySelector("input").focus();
             document.getElementById("save_bookmark").addEventListener("click", () => saveBookmark(currentTab))
+            saveBookmarkTemplate.querySelector("input").addEventListener("keydown", (ev) => ev.key === "Enter" ? saveBookmark(currentTab) : null);
         })
-
-
     });
 
     loadBookmarks();
-
 })();
