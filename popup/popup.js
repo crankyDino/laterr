@@ -27,7 +27,7 @@
                   </div>
 
                   <div class="bookmark__right">
-                    <p class="bookmark__date">${bookmark.dateCreated}</p>
+                    <p class="bookmark__date">${new Date(bookmark.dateCreated).toLocaleDateString()}</p>
                     <img src="../assets/close-64.png" alt="bookmark icon" />
                   </div>
                 `;
@@ -107,19 +107,19 @@
             return;
         }
 
-        saveBookmarkTemplate.innerHTML = `<div class="bookmark__left">
+        saveBookmarkTemplate.innerHTML = `
+                <div class="bookmark__left">
                     <input type="text">
                     <p class="bookmark__url">new bookmark</p>
-                  </div>
+                </div>
 
                   <div class="bookmark__right">
-                    <p class="bookmark__date">${new Date().toISOString()}</p>
-                    <img
-                         id="save_bookmark"
-                         class="save__bookmark"
-                         src="../assets/save-32.png"
-                         alt="save icon"
-                     />
+                    <p class="bookmark__date">${new Date().toLocaleDateString()}</p>
+
+                    <div>
+                    <img id="save_bookmark" style="height: 1.6em;"class="save__bookmark" src="../assets/save-32.png" alt="save icon"/>
+                    <img id="cancel" src="../assets/close-64.png" alt="bookmark icon" />
+                    </div>
                   </div>`;
 
 
@@ -131,6 +131,7 @@
             bookmarkContainer[0].prepend(saveBookmarkTemplate)
             saveBookmarkTemplate.querySelector("input").focus();
             document.getElementById("save_bookmark").addEventListener("click", () => saveBookmark(currentTab))
+            document.getElementById("cancel").addEventListener("click", () => document.querySelector("#unsaved_bookmark").remove())
             saveBookmarkTemplate.querySelector("input").addEventListener("keydown", (ev) => ev.key === "Enter" ? saveBookmark(currentTab) : null);
         })
     });
