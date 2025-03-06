@@ -14,7 +14,7 @@
     --lite-gray: hsl(228deg 2.15% 54.31%);
     --soft-gray: hsla(0, 0%, 39%, 0.459);
     --off-white: hsl(0, 0%, 91%);
-    --yellow-green: hsl(67, 98%, 59%);
+    --yellow-green: rgb(229, 253, 48);
     --soft-yellow: hsla(67, 90%, 61%, 0.42);
 }
 
