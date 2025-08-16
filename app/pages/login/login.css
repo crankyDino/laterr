@@ -1,0 +1,24 @@
+legend {
+    background-color: var(--dark-gray);
+    color: var(--yellow-green);
+    padding-inline: 4px;
+    font-weight: 900;
+    font-size: large;
+}
+
+fieldset {
+    color: white;
+    row-gap: 12px;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    padding-inline: 18px;
+    padding-top: 8px;
+}
+
+.login__footer {
+    color: var(--lite-gray);
+    margin: auto;
+    display: flex;
+    column-gap: 12px;
+}

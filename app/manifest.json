@@ -11,7 +11,9 @@
 "content_scripts": [
     {
     "matches": ["<all_urls>"],
-    "js": ["scripts/content.js"]
+    "js": ["scripts/content.js",
+          "scripts/handlers/form.handler.js",
+        "scripts/services/auth.service.js"]
     }
   ],
   "web_accessible_resources": [
@@ -25,6 +27,6 @@
       "48": "assets/icon-48.png"
     },
     "default_title": "Laterr",
-    "default_popup": "popup/popup.html"
+    "default_popup": "pages/login/login.html"
   }
 }

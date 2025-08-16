@@ -28,7 +28,7 @@
 
                   <div class="bookmark__right">
                     <p class="bookmark__date">${new Date(bookmark.dateCreated).toLocaleDateString()}</p>
-                    <img src="../assets/close-64.png" alt="bookmark icon" />
+                    <img src="../../assets/close-64.png" alt="bookmark icon" />
                   </div>
                 `;
 
@@ -56,7 +56,7 @@
     /**
      * Save a bookmark with the current tab link
      * 
-     * @param {string} currentTab 
+     * @param {{url:string,title:string}} currentTab 
      * @returns void
      */
     function saveBookmark(currentTab) {
@@ -67,14 +67,12 @@
             return
         }
 
-        // bookmarks.set(unsavedBookmarkInput.value, { title: unsavedBookmarkInput.value, ur: currentTab });
-
         chrome.storage.local.get("bookmarks", (bm) => {
             const bookmarks = bm?.bookmarks ? new Map(Object.entries(bm.bookmarks)) : new Map()
 
             bookmarks.set(unsavedBookmarkInput.value, {
                 title: unsavedBookmarkInput.value,
-                url: currentTab,
+                url: currentTab.url,
                 dateCreated: new Date().toISOString()
             });
 
@@ -109,7 +107,7 @@
 
         saveBookmarkTemplate.innerHTML = `
                 <div class="bookmark__left">
-                    <input type="text">
+                    <input type="text" class="bookmark__name">
                     <p class="bookmark__url">new bookmark</p>
                 </div>
 
@@ -117,19 +115,18 @@
                     <p class="bookmark__date">${new Date().toLocaleDateString()}</p>
 
                     <div>
-                    <img id="save_bookmark" style="height: 1.6em;"class="save__bookmark" src="../assets/save-32.png" alt="save icon"/>
-                    <img id="cancel" src="../assets/close-64.png" alt="bookmark icon" />
+                    <img id="save_bookmark" style="height: 1.6em;"class="save__bookmark" src="../../assets/save-32.png" alt="save icon"/>
+                    <img id="cancel" src="../../assets/close-64.png" alt="bookmark icon" />
                     </div>
                   </div>`;
 
 
         chrome.storage.local.get("currentTab", ({ currentTab }) => {
-            if (!currentTab) {
-                return;
-            }
+            if (!currentTab) { return; }
 
             bookmarkContainer[0].prepend(saveBookmarkTemplate)
             saveBookmarkTemplate.querySelector("input").focus();
+            saveBookmarkTemplate.querySelector("input").value = currentTab.title;
             document.getElementById("save_bookmark").addEventListener("click", () => saveBookmark(currentTab))
             document.getElementById("cancel").addEventListener("click", () => document.querySelector("#unsaved_bookmark").remove())
             saveBookmarkTemplate.querySelector("input").addEventListener("keydown", (ev) => ev.key === "Enter" ? saveBookmark(currentTab) : null);

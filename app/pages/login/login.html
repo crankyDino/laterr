@@ -1,0 +1,40 @@
+<link rel="stylesheet" href="../styles.css" type="text/css" />
+<link rel="stylesheet" href="login.css" type="text/css" />
+<script type="module" src="login.js"></script>
+
+<div class="container">
+  <h1 class="title">Laterr</h1>
+  <form action="" method="post" id="login-form">
+    <fieldset>
+      <legend>Login</legend>
+      <div class="card">
+        <div class="card__item--form form__group">
+          <label for="username">Username or Email</label>
+          <input required type="text" id="username" placeholder="bart.simpson@springfield.com">
+        </div>
+
+        <div hidden class="card__item--form form__group" style="display: none;">
+          <label for="email">Email </label>
+          <input type="text" id="email" placeholder="bart.simpson@springfield.com">
+        </div>
+
+        <div class="card__item--form form__group">
+          <label for="password">Password</label>
+          <input required minlength="6" type="password" id="password" placeholder="******">
+        </div>
+
+        <div hidden class="card__item--form form__group" style="display: none;">
+          <label for="confirm">Confirm Password</label>
+          <input type="text" id="confirm" placeholder="******">
+        </div>
+
+        <button type="button" form="login-form" id="btn-submit"
+          style=" place-self: end; display: flex; column-gap: 8px; " class="btn--primary">Submit</button>
+      </div>
+      <div class="login__footer">
+        <small>don't have an account?</small>|<button>sign-up</button>
+      </div>
+    </fieldset>
+  </form>
+
+</div>

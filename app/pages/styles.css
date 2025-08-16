@@ -1,0 +1,149 @@
+@font-face {
+    font-family: "Bolas";
+    src: url('/assets/Bolas-Bold.otf');
+}
+
+@font-face {
+    font-family: "Connection";
+    src: url('/assets/ConnectionSerif-d20X.otf');
+}
+
+:root {
+    --radius: 0.3em;
+    --solid-gray: hsl(0, 0%, 0%);
+    --dark-gray: hsl(0, 0%, 15%);
+    --lite-gray: hsl(228deg 2.15% 54.31%);
+    --soft-gray: hsla(0, 0%, 39%, 0.459);
+    --off-white: hsl(0, 0%, 91%);
+    --yellow-green: rgb(229, 253, 48);
+    --soft-yellow: hsla(67, 90%, 61%, 0.42);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+p,
+h1 {
+    font-family: monospace;
+}
+
+a {
+    text-decoration: none;
+}
+
+html {
+    background-color: var(--dark-gray);
+    border-radius: 5rem !important;
+    outline: none;
+}
+
+button {
+    border: none;
+    background-color: transparent;
+    color: var(--yellow-green);
+    padding: 0;
+}
+
+.container {
+    max-height: 560px;
+    min-width: 350px;
+    margin: .6em;
+}
+
+.title {
+    font-size: 4.8rem;
+    color: var(--yellow-green);
+    font-family: "Bolas";
+    margin: 0;
+}
+
+
+div.error::before {
+    content: "";
+
+}
+
+div.error {
+    color: hsl(16, 100%, 50%);
+}
+
+/* BUTTONs */
+.btn {
+    padding: 0;
+    border: none;
+    align-content: center;
+}
+
+.btn--primary {
+    background-color: var(--yellow-green);
+    color: var(--dark-gray);
+    font-size: medium;
+    font-weight: bold;
+    border-radius: var(--radius);
+    padding-inline: 8px;
+    padding-block: 4px;
+    width: 128px;
+    justify-content: center;
+}
+
+
+/* CARD */
+.card,
+.card__item,
+.card__item--form {
+    display: flex;
+    flex-direction: column;
+}
+
+.card {
+    row-gap: 14px;
+}
+
+.card__item {}
+
+.card__item--form {
+    row-gap: 6px;
+
+    & input {
+        height: 2.6em;
+        border-radius: var(--radius);
+        border: none;
+        padding: .8em;
+    }
+
+    & input:focus-visible {
+        outline: 1px solid var(--yellow-green);
+
+    }
+}
+
+
+/* UTIL */
+.save__bookmark {
+    height: 80%;
+    margin: auto;
+}
+
+.footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 1.2em 0;
+    padding-top: 8px;
+}
+
+.footer__icon {
+    width: 50%;
+}
+
+/* UTILITIES */
+button,
+a {
+    &:hover {
+        cursor: pointer;
+    }
+}
