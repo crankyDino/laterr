@@ -29,12 +29,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 
-chrome.windows.onFocusChanged.addListener((id, tab) => {
+chrome.windows.onFocusChanged.addListener(() => {
     console.log("On window Update");
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (tabs.length > 0) {
             //update current url to current tab
-            chrome.storage.local.set({ currentTab: { url: tabs[0].url, title: tabs[0].title } })
+            chrome.storage.local.set({ currentTab: { url: tabs[0]!.url, title: tabs[0]!.title } })
         }
     });
 })

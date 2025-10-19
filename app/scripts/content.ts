@@ -5,15 +5,16 @@
     // console.log(document.getElementsByClassName("title"));
 
 
-
+    
 })()
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log("wtfffff");
     console.log(location.href);
 
     switch (message.action) {
         case "addBookmark":
-localStorage.
+            localStorage.length
             break;
 
         default:

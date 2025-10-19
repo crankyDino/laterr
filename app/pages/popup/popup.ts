@@ -1,5 +1,5 @@
 (() => {
-    const addBookmark = document.getElementById("add_bookmark");
+    const addBookmark = document.getElementById("add_bookmark")!;
     // const saveBookmark = document.getElementById("save_bookmark");
     const bookmarkContainer = document.getElementsByClassName("bookmark__container");
 
@@ -12,9 +12,9 @@
         chrome.storage.local.get("bookmarks", ({ bookmarks }) => {
             if (!bookmarks) { return; }
 
-            bookmarkContainer[0].querySelectorAll(".bookmark").forEach((x) => x.remove())
-            const marks = Object.values(bookmarks).sort((x, y) => new Date(y.dateCreated) - new Date(x.dateCreated))
-            marks.forEach(bookmark => {
+            bookmarkContainer[0]!.querySelectorAll(".bookmark").forEach((x) => x.remove())
+            const marks = Object.values(bookmarks).sort((x:any, y:any) => new Date(y.dateCreated).getTime() - new Date(x.dateCreated).getTime())
+            marks.forEach((bookmark:any) => {
 
                 const bookmarkTemplate = document.createElement("div")
                 bookmarkTemplate.classList.add("bookmark");
@@ -32,8 +32,8 @@
                   </div>
                 `;
 
-                bookmarkTemplate.querySelector("img").addEventListener("click", () => deleteBookmark(bookmark.title))
-                bookmarkContainer[0].append(bookmarkTemplate)
+                bookmarkTemplate.querySelector("img")!.addEventListener("click", () => deleteBookmark(bookmark.title))
+                bookmarkContainer[0]!.append(bookmarkTemplate)
             });
         })
     }
@@ -45,7 +45,7 @@
      * @param {string} msg 
      * 
      */
-    function showError(elem, msg) {
+    function showError(elem:HTMLElement, msg?:string) {
 
         elem.toggleAttribute("hidden")
         setTimeout(() => {
@@ -59,11 +59,11 @@
      * @param {{url:string,title:string}} currentTab 
      * @returns void
      */
-    function saveBookmark(currentTab) {
-        const unsavedBookmark = document.getElementById("unsaved_bookmark");
-        const unsavedBookmarkInput = unsavedBookmark.querySelector("input");
+    function saveBookmark(currentTab:{url:string,title:string}) {
+        const unsavedBookmark = document.getElementById("unsaved_bookmark")!;
+        const unsavedBookmarkInput = unsavedBookmark.querySelector("input")!;
         if (unsavedBookmarkInput.value === '') {
-            showError(document.querySelector(".error"));
+            showError(document.querySelector(".error")!);
             return
         }
 
@@ -90,7 +90,7 @@
      * @param {string} id 
      * @returns void
      */
-    function deleteBookmark(id) {
+    function deleteBookmark(id:string) {
         chrome.storage.local.get("bookmarks", (bm) => {
             console.log(delete bm.bookmarks[id]);
             chrome.storage.local.set({ bookmarks: bm.bookmarks });
@@ -101,7 +101,7 @@
 
     addBookmark.addEventListener("click", (ev) => {
         if (document.querySelector("#unsaved_bookmark")) {
-            document.querySelector("#unsaved_bookmark").remove();
+            document.querySelector("#unsaved_bookmark")!.remove();
             return;
         }
 
@@ -124,12 +124,12 @@
         chrome.storage.local.get("currentTab", ({ currentTab }) => {
             if (!currentTab) { return; }
 
-            bookmarkContainer[0].prepend(saveBookmarkTemplate)
-            saveBookmarkTemplate.querySelector("input").focus();
-            saveBookmarkTemplate.querySelector("input").value = currentTab.title;
-            document.getElementById("save_bookmark").addEventListener("click", () => saveBookmark(currentTab))
-            document.getElementById("cancel").addEventListener("click", () => document.querySelector("#unsaved_bookmark").remove())
-            saveBookmarkTemplate.querySelector("input").addEventListener("keydown", (ev) => ev.key === "Enter" ? saveBookmark(currentTab) : null);
+            bookmarkContainer[0]!.prepend(saveBookmarkTemplate)
+            saveBookmarkTemplate.querySelector("input")!.focus();
+            saveBookmarkTemplate.querySelector("input")!.value = currentTab.title;
+            document.getElementById("save_bookmark")!.addEventListener("click", () => saveBookmark(currentTab))
+            document.getElementById("cancel")!.addEventListener("click", () => document.querySelector("#unsaved_bookmark")!.remove())
+            saveBookmarkTemplate.querySelector("input")!.addEventListener("keydown", (ev) => ev.key === "Enter" ? saveBookmark(currentTab) : null);
         })
     });
 
