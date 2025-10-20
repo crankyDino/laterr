@@ -19,7 +19,6 @@ function submit() {
             login(txtEmail.value, txtPassword.value)
             break;
     }
-    // login('modiseab+laterr@gmail.com', 'iNA@qA$Bs!Cigt8S')
 }
 
 function toggle_signup_form() {
