@@ -6,7 +6,7 @@
   "scripts": {
     "build": "bun run build.ts",
     "watch": "bun run build.ts --watch",
-    "dev": "NODE_ENV=development bun run build.ts && bun run watch",
+    "dev": "NODE_ENV=development bun run build.ts --watch",
     "build:prod": "NODE_ENV=production bun run build.ts"
   },
   "devDependencies": {

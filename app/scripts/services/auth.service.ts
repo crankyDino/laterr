@@ -1,24 +1,33 @@
 import PocketBase from 'pocketbase';
+import type { IUserPayload } from '../../lib/models/user.model';
 
-const pb = new PocketBase('http://192.168.0.21');
+const pb = new PocketBase('http://192.168.0.21:80');
 
 /**
  * 
- * @param {string} email 
+ * @param {string} identity the user email. pb is just being extra
  * @param {string} password 
  * @returns {boolean}
  */
-async function login(email:string, password:string) {
+async function login(identity:string, password:string) {
   try {
+
+    // const resultList = await pb.collection('users').getList(1, 50);
+
+    console.log(pb.authStore);
+    console.log(identity);
+    
+    
     const authData = await pb.collection('users').authWithPassword(
-      email,
+      identity,
       password,
     );
+    console.log(authData);
     
     // after the above you can also access the auth data from the authStore
-    console.log(pb.authStore.isValid);
-    console.log(pb.authStore.token);
-    console.log(pb.authStore.record?.id);
+    // console.log(pb.authStore.isValid);
+    // console.log(pb.authStore.token);
+    // console.log(pb.authStore.record?.id);
     
     // Don't clear the auth store - this logs the user out!
     // pb.authStore.clear();
@@ -30,8 +39,55 @@ async function login(email:string, password:string) {
   }
 }
 
+/**
+ * 
+ * @param {string} email 
+ * @param {string} password 
+ * @returns {boolean}
+ */
+async function signup(email:string, password:string,username:string) {
+  try {
+
+    
+    const payload: IUserPayload={
+   email:email,
+   name:username,
+   password:password,
+   passwordConfirm:password
+    }
+
+const record = await pb.collection('users').create(payload);
+console.log(record);
+
+await pb.collection('users').requestVerification(email);
+
+
+    return pb.authStore.isValid;
+  } catch (error) {
+    console.error('Login failed:', error);
+    return false;
+  }
+}
+
+/**
+ *  
+ * @returns {boolean}
+ */
+async function logout() {
+  try {
+    pb.authStore.clear();
+    return pb.authStore.isValid;
+  } catch (error) {
+    console.error('Login failed:', error);
+    return false;
+  }
+}
+
+
 export  {
-    login
+    login,
+    logout,
+    signup
 }
 
 // // Note: You'll need to include PocketBase in your extension

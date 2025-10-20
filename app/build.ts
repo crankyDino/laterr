@@ -54,13 +54,10 @@ async function build() {
 
     console.log('📋 Copying static files...');
 
-    // Copy manifest
     await cp('./manifest.json', './dist/manifest.json');
 
-    // Copy assets
     await cp('./assets', './dist/assets', { recursive: true });
 
-    // Copy HTML and CSS files
     await mkdir('./dist/pages/popup', { recursive: true });
     await mkdir('./dist/pages/login', { recursive: true });
 

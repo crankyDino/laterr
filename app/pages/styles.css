@@ -41,6 +41,13 @@ html {
     outline: none;
 }
 
+
+html,
+body {
+    height: fit-content !important;
+}
+
+
 button {
     border: none;
     background-color: transparent;
@@ -52,6 +59,7 @@ button {
     max-height: 560px;
     min-width: 350px;
     margin: .6em;
+    box-sizing: border-box;
 }
 
 .title {

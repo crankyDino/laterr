@@ -10,31 +10,31 @@
     <fieldset>
       <legend>Login</legend>
       <div class="card">
-        <div class="card__item--form form__group">
-          <label for="username">Username or Email</label>
-          <input required type="text" id="username" placeholder="bart.simpson@springfield.com">
+        <div id="usernameWrapper" class="card__item--form form__group" style="display: none;">
+          <label for="username">Username</label>
+          <input required type="text" id="username" placeholder="bart simpson">
         </div>
 
-        <div hidden class="card__item--form form__group" style="display: none;">
+        <div id="emailWrapper" class="card__item--form form__group" >
           <label for="email">Email </label>
           <input type="text" id="email" placeholder="bart.simpson@springfield.com">
         </div>
 
         <div class="card__item--form form__group">
           <label for="password">Password</label>
-          <input required minlength="6" type="password" id="password" placeholder="******">
+          <input required minlength="8" type="password" id="password" placeholder="******">
         </div>
 
-        <div hidden class="card__item--form form__group" style="display: none;">
+        <div id="confirmPswd" class="card__item--form form__group" style="display: none;">
           <label for="confirm">Confirm Password</label>
-          <input type="text" id="confirm" placeholder="******">
+          <input type="password" minlength="8" id="confirm" placeholder="******">
         </div>
 
-        <button type="button" form="login-form" id="btn-submit"
-          style=" place-self: end; display: flex; column-gap: 8px; " class="btn--primary">Submit</button>
+        <button type="submit" form="login-form" id="btn_submit"
+          style=" place-self: end; display: flex; column-gap: 8px; " class="btn--primary">Login</button>
       </div>
       <div class="login__footer">
-        <small>don't have an account?</small>|<button>sign-up</button>
+        <small id>don't have an account?</small>|<button type="button" id="btn_signup">sign-up</button>
       </div>
     </fieldset>
   </form>
