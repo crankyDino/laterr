@@ -1,5 +1,6 @@
-import { isAuthenticated } from "../../scripts/services/auth.service";
+import { isAuthenticated, logout } from "../../scripts/services/auth.service";
 
+const btn_logout = document.getElementById("logout")!;
 const addBookmark = document.getElementById("add_bookmark")!;
 // const saveBookmark = document.getElementById("save_bookmark");
 const bookmarkContainer = document.getElementsByClassName("bookmark__container");
@@ -137,7 +138,10 @@ addBookmark.addEventListener("click", (ev) => {
 (() => {
     loadBookmarks();
     isAuthenticated().then((res) => {
-        console.log(res)
-    });
+        if (!res) {
 
+        }
+        
+        btn_logout.onclick = logout
+    });
 })();

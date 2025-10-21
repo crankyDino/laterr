@@ -1,4 +1,7 @@
-import { initAuth } from "../services/auth.service";
+
+
+
+
 
 chrome.tabs.onUpdated.addListener((tabId, tab) => {
     console.log("On Tab Update");
@@ -15,21 +18,20 @@ chrome.tabs.onUpdated.addListener((tabId, tab) => {
 });
 
 chrome.runtime.onStartup.addListener(() => {
-    console.log("I'm here in the background actioning");
+    console.log("I'm here in the background statuping here");
+
 
 });
 
 chrome.runtime.onInstalled.addListener(() => {
-    initAuth().then(res => {
-        // isAuthenticated().then(res => {
-        console.log(res);
-        console.log("braaa");
+    console.log("I'm here in the background installing here");
+    // isAuthenticated().then(res => {
+    //     console.log("brooooo");
+    //     console.log(res);
 
-        if (!res) return;
-        chrome.action.setPopup({ popup: 'pages/login/login.html' });
-        window.location.href = '../popup/popup.html';
-        // })
-    })
+    //     if (!res) return;
+    //     goHome();
+    // })
 });
 
 

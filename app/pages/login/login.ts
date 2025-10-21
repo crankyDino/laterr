@@ -1,5 +1,6 @@
 import { validateForm } from "../../scripts/handlers/form.handler";
-import { signup, login } from "../../scripts/services/auth.service";
+import { goHome } from "../../scripts/handlers/login.handler";
+import { signup, login, initAuth } from "../../scripts/services/auth.service";
 
 let action: 'login' | 'signup' = 'login';
 const form = (document.getElementById("login-form") as HTMLFormElement);
@@ -22,9 +23,9 @@ async function submit() {
                 window.location.href = '../popup/popup.html';
                 return;
             }
-            
+
             lblErr.hidden = false
-            
+
             const errOut = setTimeout(() => {
                 lblErr.hidden = true
                 clearTimeout(errOut);
@@ -69,6 +70,10 @@ function btn_signup_handler() {
 }
 
 (() => {
+    initAuth().then(res => {
+        if (!res) return;
+        goHome();
+    })
     btn_signup.onclick = btn_signup_handler
     validateForm(form, btn_submit.onclick = submit)
 })();
