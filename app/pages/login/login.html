@@ -15,8 +15,8 @@
           <input required type="text" id="username" placeholder="bart simpson">
         </div>
 
-        <div id="emailWrapper" class="card__item--form form__group" >
-          <label for="email">Email </label>
+        <div id="emailWrapper" class="card__item--form form__group">
+          <label for="email">E-mail </label>
           <input type="text" id="email" placeholder="bart.simpson@springfield.com">
         </div>
 
@@ -29,12 +29,13 @@
           <label for="confirm">Confirm Password</label>
           <input type="password" minlength="8" id="confirm" placeholder="******">
         </div>
-
+        <small id="error" style="text-align: center; color: orange;" hidden>E-mail or password invalid</small>
         <button type="submit" form="login-form" id="btn_submit"
           style=" place-self: end; display: flex; column-gap: 8px; " class="btn--primary">Login</button>
       </div>
+
       <div class="login__footer">
-        <small id>don't have an account?</small>|<button type="button" id="btn_signup">sign-up</button>
+        <small>don't have an account?</small>|<button type="button" id="btn_signup">sign-up</button>
       </div>
     </fieldset>
   </form>

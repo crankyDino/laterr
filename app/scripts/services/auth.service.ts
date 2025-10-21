@@ -2,6 +2,58 @@ import PocketBase from 'pocketbase';
 import type { IUserPayload } from '../../lib/models/user.model';
 
 const pb = new PocketBase('http://192.168.0.21:80');
+pb.autoCancellation(false);
+const USERS = "users"
+
+/**
+ * Save auth state to Chrome storage whenever it changes
+ */
+pb.authStore.onChange(() => {
+  console.log("on changing:",pb.authStore.token);
+  
+  chrome.storage.local.set({
+    laterr_auth: {
+      token: pb.authStore.token,
+      record: pb.authStore.record,
+    }
+  });
+});
+
+
+/**
+ * Initialize auth store from Chrome storage
+ * @returns 
+*/
+export async function initAuth(): Promise<boolean> {
+  return new Promise( (res) => {
+    
+    // console.log("on initing");
+    // console.log(pb.authStore.token);
+    // if(await isAuthenticated()){
+    //   console.log("on authing");
+    //   chrome.storage.local.get('laterr_auth', (x) => {
+    //     res(pb.authStore.isValid);
+    //     pb.authStore.save(x.laterr_auth.token, x.laterr_auth.record);
+    //     console.log(x.laterr_auth);
+    //   });
+    // }
+    
+    
+    chrome.storage.local.get('laterr_auth',async (x) => {
+      console.log("content");
+      console.log(x.laterr_auth);
+      
+      if (x.laterr_auth) {
+        await isAuthenticated()
+      }
+      //   res(false);
+      //   return;     
+      
+      console.log("is valid:",pb.authStore.isValid);
+      res(pb.authStore.isValid);
+    });
+  });
+}
 
 /**
  * 
@@ -9,29 +61,14 @@ const pb = new PocketBase('http://192.168.0.21:80');
  * @param {string} password 
  * @returns {boolean}
  */
-async function login(identity:string, password:string) {
-  try {
-
-    // const resultList = await pb.collection('users').getList(1, 50);
-
-    console.log(pb.authStore);
-    console.log(identity);
-    
+export async function login(identity:string, password:string) {
+  try { 
     
     const authData = await pb.collection('users').authWithPassword(
       identity,
       password,
     );
-    console.log(authData);
-    
-    // after the above you can also access the auth data from the authStore
-    // console.log(pb.authStore.isValid);
-    // console.log(pb.authStore.token);
-    // console.log(pb.authStore.record?.id);
-    
-    // Don't clear the auth store - this logs the user out!
-    // pb.authStore.clear();
-    
+     
     return pb.authStore.isValid;
   } catch (error) {
     console.error('Login failed:', error);
@@ -45,21 +82,20 @@ async function login(identity:string, password:string) {
  * @param {string} password 
  * @returns {boolean}
  */
-async function signup(email:string, password:string,username:string) {
+export async function signup(email:string, password:string,username:string) {
   try {
 
     
-    const payload: IUserPayload={
+   const payload: IUserPayload={
    email:email,
    name:username,
    password:password,
    passwordConfirm:password
     }
 
-const record = await pb.collection('users').create(payload);
-console.log(record);
+const record = await pb.collection(USERS).create(payload);
 
-await pb.collection('users').requestVerification(email);
+await pb.collection(USERS).requestVerification(email);
 
 
     return pb.authStore.isValid;
@@ -73,9 +109,10 @@ await pb.collection('users').requestVerification(email);
  *  
  * @returns {boolean}
  */
-async function logout() {
+export async function logout() {
   try {
     pb.authStore.clear();
+    await chrome.storage.local.remove(['laterr_auth']);
     return pb.authStore.isValid;
   } catch (error) {
     console.error('Login failed:', error);
@@ -83,11 +120,18 @@ async function logout() {
   }
 }
 
-
-export  {
-    login,
-    logout,
-    signup
+/**
+ *  
+ * @returns {boolean}
+ */
+export async function isAuthenticated():Promise<boolean> {
+  try {
+    const token = await pb.collection(USERS).authRefresh()
+      return pb.authStore.isValid;
+  } catch (error) {
+    // console.warn('User not authenticated');
+    return false;
+  }
 }
 
 // // Note: You'll need to include PocketBase in your extension

@@ -1,22 +1,35 @@
 import { validateForm } from "../../scripts/handlers/form.handler";
-import { login, signup } from "../../scripts/services/auth.service";
+import { signup, login } from "../../scripts/services/auth.service";
 
 let action: 'login' | 'signup' = 'login';
 const form = (document.getElementById("login-form") as HTMLFormElement);
 const legend = (document.getElementsByTagName('legend')[0] as HTMLLegendElement);
+const lblErr = (document.getElementById('error') as HTMLElement);
 const txtUsername = (document.getElementById('username') as HTMLInputElement);
 const txtEmail = (document.getElementById('email') as HTMLInputElement);
 const txtPassword = (document.getElementById('password') as HTMLInputElement);
 const btn_submit = document.getElementById('btn_submit') as HTMLDivElement;
 const btn_signup = document.getElementById('btn_signup') as HTMLDivElement;
 
-function submit() {
+async function submit() {
     switch (action) {
         case "signup":
             signup(txtEmail.value, txtPassword.value, txtUsername.value)
             break;
         default:
-            login(txtEmail.value, txtPassword.value)
+            if (await login(txtEmail.value, txtPassword.value)) {
+                chrome.action.setPopup({ popup: 'pages/popup/popup.html' });
+                window.location.href = '../popup/popup.html';
+                return;
+            }
+            
+            lblErr.hidden = false
+            
+            const errOut = setTimeout(() => {
+                lblErr.hidden = true
+                clearTimeout(errOut);
+            }, 8000)
+
             break;
     }
 }
@@ -28,7 +41,6 @@ function toggle_signup_form() {
     switch (action) {
         case "signup":
             [usernameWrapper, confirmPswdWrapper].forEach(element => {
-                console.log(element);
                 element.style.display = "";
                 element.getElementsByTagName("input")[0]!.required = true
             });
@@ -53,10 +65,10 @@ function toggle_signup_form() {
 function btn_signup_handler() {
     action = action === "login" ? "signup" : "login"
     toggle_signup_form()
+    // form.reset()
 }
 
 (() => {
     btn_signup.onclick = btn_signup_handler
-    form.reset()
-    validateForm(form, submit)
+    validateForm(form, btn_submit.onclick = submit)
 })();

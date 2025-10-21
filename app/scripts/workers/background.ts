@@ -1,3 +1,5 @@
+import { initAuth } from "../services/auth.service";
+
 chrome.tabs.onUpdated.addListener((tabId, tab) => {
     console.log("On Tab Update");
 
@@ -12,13 +14,24 @@ chrome.tabs.onUpdated.addListener((tabId, tab) => {
     // });
 });
 
-chrome.action.onClicked.addListener(() => {
+chrome.runtime.onStartup.addListener(() => {
     console.log("I'm here in the background actioning");
+
 });
 
 chrome.runtime.onInstalled.addListener(() => {
-    console.log("Laterr Extension Installed!");
+    initAuth().then(res => {
+        // isAuthenticated().then(res => {
+        console.log(res);
+        console.log("braaa");
+
+        if (!res) return;
+        chrome.action.setPopup({ popup: 'pages/login/login.html' });
+        window.location.href = '../popup/popup.html';
+        // })
+    })
 });
+
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log("Message received:", message);
