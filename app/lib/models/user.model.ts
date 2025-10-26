@@ -1,4 +1,5 @@
 export interface IUser {
+    id: string
     avatar?: string
     collectionId: string
     collectionName: string
@@ -6,12 +7,10 @@ export interface IUser {
     created: string
     email: string
     emailVisibility: boolean
-    id: string
     name: string
     updated: string
     verified: boolean
 }
-
 
 export interface IUserPayload extends Pick<IUser, "name" | "email"  | "avatar"> {
     password: string,

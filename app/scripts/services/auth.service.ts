@@ -1,10 +1,8 @@
-import PocketBase from "pocketbase";
-import type { IUserPayload } from "../../lib/models/user.model";
+import type { IUser, IUserPayload } from "../../lib/models/user.model";
 import { goLogin } from "../handlers/login.handler";
+import { pb } from "./repo.service";
 
-const pb = new PocketBase("http://192.168.0.21:80");
-pb.autoCancellation(false);
-const USERS = "users";
+const COLLECTION_USERS = "users";
 
 /**
  * Save auth state to Chrome storage whenever it changes
@@ -12,11 +10,12 @@ const USERS = "users";
 pb.authStore.onChange(() => {
   console.log("on changing:", pb.authStore.token);
 
+  // TO-DO: use ephemeral store...eventually
   chrome.storage.local.set({
     laterr_auth: {
       token: pb.authStore.token,
       record: pb.authStore.record,
-    },
+    }
   });
 });
 
@@ -27,11 +26,14 @@ pb.authStore.onChange(() => {
 export async function initAuth(): Promise<boolean> {
   return new Promise((res) => {
     chrome.storage.local.get("laterr_auth", async (x) => {
-      if (!x.laterr_auth) { res(false); }
+      if (!x.laterr_auth || Object.values(x.laterr_auth).some(x => x === null)) {
+        res(false);
+        return;
+      }
 
-      pb.authStore.save(x.laterr_auth.token, x.laterr_auth.record);
+      pb.authStore.save(x.laterr_auth?.token, x.laterr_auth?.record);
 
-      await pb.collection(USERS).authRefresh();
+      await pb.collection(COLLECTION_USERS).authRefresh();
       res(pb.authStore.isValid);
     });
   });
@@ -75,9 +77,9 @@ export async function signup(
       passwordConfirm: password,
     };
 
-    const record = await pb.collection(USERS).create(payload);
+    const record = await pb.collection(COLLECTION_USERS).create(payload);
 
-    await pb.collection(USERS).requestVerification(email);
+    await pb.collection(COLLECTION_USERS).requestVerification(email);
 
     return pb.authStore.isValid;
   } catch (error) {
@@ -93,7 +95,7 @@ export async function signup(
 export async function logout() {
   try {
     pb.authStore.clear();
-    await chrome.storage.local.remove(["laterr_auth"]);
+    await chrome.storage.local.remove("laterr_auth");
     goLogin();
     return pb.authStore.isValid;
   } catch (error) {
@@ -110,12 +112,29 @@ export async function isAuthenticated(): Promise<boolean> {
   try {
     if (!pb.authStore.token) { return false; }
 
-    await pb.collection(USERS).authRefresh();
+    await pb.collection(COLLECTION_USERS).authRefresh();
 
     return pb.authStore.isValid;
   } catch (error) {
     // console.warn('User not authenticated');
     return false;
+  }
+}
+
+/**
+ *
+ * @returns {IUser | null}
+ */
+export async function getCurrentUser(): Promise<IUser | null> {
+  try {
+    if (!pb.authStore.token) { return null; }
+
+    await pb.collection(COLLECTION_USERS).authRefresh();
+
+    return pb.authStore.record! as IUser;
+  } catch (error) {
+    // console.warn('User not authenticated');
+    return null;
   }
 }
 

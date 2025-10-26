@@ -13,9 +13,11 @@
       "matches": ["<all_urls>"],
       "js": [
         "scripts/content.js",
-        "scripts/handlers/form.handler.js",
+        "scripts/services/repo.service.js",
+        "scripts/services/auth.service.js",
+        "scripts/services/bookmarks.service.js",
         "scripts/handlers/login.handler.js",
-        "scripts/services/auth.service.js"
+        "scripts/handlers/form.handler.js"
       ]
     }
   ],

@@ -40,6 +40,11 @@ html {
     outline: none;
 }
 
+html,
+body {
+    height: fit-content !important;
+}
+
 .container {
     max-height: 560px;
     min-width: 350px;
@@ -51,6 +56,14 @@ html {
     color: var(--yellow-green);
     font-family: "Bolas";
     margin: 0;
+}
+
+#no_content {
+    font-size: x-large;
+    text-align: center;
+    color: var(--lite-gray);
+    font-weight: bolder;
+    letter-spacing: 2px;
 }
 
 .bookmark {

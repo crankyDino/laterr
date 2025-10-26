@@ -41,12 +41,10 @@ html {
     outline: none;
 }
 
-
 html,
 body {
     height: fit-content !important;
 }
-
 
 button {
     border: none;

@@ -9,14 +9,15 @@ async function build() {
     await mkdir('./dist', { recursive: true });
 
     console.log('📦 Building TypeScript files...');
-
+    const isProd = process.env.NODE_ENV === 'production'
     // Build content script
     await Bun.build({
         entrypoints: ['./scripts/content.ts'],
         outdir: './dist/scripts',
         target: 'browser',
-        minify: process.env.NODE_ENV === 'production',
-        sourcemap: 'external',
+        minify: isProd,
+        sourcemap: isProd ? 'external' : 'inline',
+        env: 'inline'
     });
 
     // Build background worker
@@ -25,13 +26,16 @@ async function build() {
             './scripts/workers/background.ts',
             './scripts/workers/auth.worker.ts',
             './scripts/services/auth.service.ts',
+            './scripts/services/bookmarks.service.ts',
+            './scripts/services/repo.service.ts',
             './scripts/handlers/form.handler.ts',
             './scripts/handlers/login.handler.ts'
         ],
         outdir: './dist/scripts/',
         target: 'browser',
-        minify: process.env.NODE_ENV === 'production',
-        sourcemap: 'external',
+        minify: isProd,
+        sourcemap: isProd ? 'external' : 'inline',
+        env: 'inline',
     });
 
     // Build popup
@@ -39,8 +43,9 @@ async function build() {
         entrypoints: ['./pages/popup/popup.ts'],
         outdir: './dist/pages/popup',
         target: 'browser',
-        minify: process.env.NODE_ENV === 'production',
-        sourcemap: 'external',
+        minify: isProd,
+        sourcemap: isProd ? 'external' : 'inline',
+        env: 'inline'
     });
 
     // Build login
@@ -48,8 +53,9 @@ async function build() {
         entrypoints: ['./pages/login/login.ts'],
         outdir: './dist/pages/login',
         target: 'browser',
-        minify: process.env.NODE_ENV === 'production',
-        sourcemap: 'external',
+        minify: isProd,
+        sourcemap: isProd ? 'external' : 'inline',
+        env: 'inline'
     });
 
     console.log('📋 Copying static files...');
