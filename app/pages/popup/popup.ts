@@ -180,15 +180,15 @@ function addBookmark() {
     </div>
     </div>`;
 
-    placeholder.hidden = true;
-    
+    // placeholder.hidden = true;
+
     chrome.storage.local.get("currentTab", ({ currentTab }) => {
         if (!currentTab) { return; }
         bookmarkContainer[0]!.prepend(saveBookmarkTemplate)
         saveBookmarkTemplate.querySelector("input")!.focus();
         saveBookmarkTemplate.querySelector("input")!.value = currentTab.title;
         document.getElementById("save_bookmark")!.addEventListener("click", () => saveBookmark(currentTab))
-        document.getElementById("cancel")!.addEventListener("click", () => document.querySelector("#unsaved_bookmark")!.remove(), placeholder.hidden = false)
+        document.getElementById("cancel")!.addEventListener("click", () => {document.querySelector("#unsaved_bookmark")!.remove();})
         saveBookmarkTemplate.querySelector("input")!.addEventListener("keydown", (ev) => ev.key === "Enter" ? saveBookmark(currentTab) : null);
     })
 };
